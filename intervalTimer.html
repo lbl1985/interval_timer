@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style> 
+		#myDIV {
+		    width: 300px;
+		    height: 300px;
+		    background-color: coral;
+		    color: white;
+		}
+	</style>
+</head>
+<body>
+
+<div id = "myDIV">
+	<h1 id = "exercise">Exercise Name: </h1>
+	<h2 id = "set_id"> Set id: </h2>
+	<h3 id = "timer"> 0 </h1>
+</div>
+
+<script>
+
+function runOneSetting(s) {
+	document.getElementById("exercise").innerHTML = "Exercise Name: " + s.name + " " + s.sets.toString() + " sets";
+	document.getElementById("set_id").innerHTML = "Set id: 0"; 
+	if (s.sets !== -1) {
+		runInterval(s)
+	} else {
+		runQuantity(s)
+	}
+}
+
+function runInterval(s) {
+	var d = 0;
+	var state = "exec";
+	var init = true;
+	var i = 0;
+	while(true) {		
+		// new set
+		if(init === true && d === 0) {
+			d = s.execTime;
+			init = false;
+			var myVar = setInterval(function(){myTimer()}, 1000);
+			// denotion section
+			document.getElementById("exercise").innerHTML = "Exercise Name: " + s.name + " " + s.sets.toString() + " sets";
+			document.getElementById("set_id").innerHTML = "Set id: 1";
+			document.getElementById("myDIV").style.backgroundColor = "red";
+		}		
+		if (d === 0) {
+			if (state === true) { // interval
+				d = s.Interval;
+				var myInterval = setInterval(function(){myTimer()}, 1000);
+				document.getElementById("exercise").innerHTML = "Interval Rest";
+				document.getElementById("set_id").innerHTML = "Set id: " + (i + 1).toString();
+				document.getElementById("myDIV").style.backgroundColor = "green";
+			} else { // just finish interval
+				i = i + 1;
+				if (i < s.sets) {
+					d = s.execTime;
+					var myVar = setInterval(function(){myTimer()}, 1000);
+					document.getElementById("exercise").innerHTML = "Exercise Name: " + s.name + " " + s.sets.toString() + " sets";
+					document.getElementById("set_id").innerHTML = "Set id: " + (i + 1).toString();
+					document.getElementById("myDIV").style.backgroundColor = "red";
+				} else {
+					d = s.Rest;
+					var myRest = setInterval(function(){myRestTimer()}, 1000);
+					document.getElementById("exercise").innerHTML = "Rest";
+					document.getElementById("set_id").innerHTML = "";
+					document.getElementById("myDIV").style.backgroundColor = "blue";
+				}				
+			}
+		}
+	}
+}
+
+function myTimer() {
+	d = d - 1;
+	document.getElementById("timer").innerHTML = d.toString();
+	if (d == 0) {		
+		if (state === "exec") {
+			state = "interval";
+			clearInterval(myVar)
+		} else if{
+
+		}
+		state = ~state;
+	}
+}
+
+function myRestTimer() {
+	d = d - 1;
+	document.getElementById("timer").innerHTML = d.toString();
+	if (d == 0) {
+		clearInterval(myRest)
+		state = ~state;
+	}
+}
+
+var setting = [ 
+	{sets:2,  name:"Test", execTime:2, Interval: 1, Rest: 5},
+	{sets:10, name:"BackExtension", execTime:15, Interval: 5, Rest: 20},
+	{sets:60, name:"KneelingSuperMan", execTime:4, Interval: 2, Rest: 20},
+	{sets:10, name:"LayingBackExtension", execTime:7, Interval: 3, Rest: 20},
+	{sets:10, name:"WallSliding", execTime:7, Interval: 3, Rest: 20},
+	{sets:-1, name:"Back Stretch Up", quantity: 30},
+	{sets:20, name:"CoreStretch", execTime:15, Interval: 5, Rest: 20},
+	{sets:-1, name:"Russian Swiss", quantity: 60},
+	{sets:-1, name:"Back Stretch Up", quantity: 30},
+	{sets:-1, name:"Push Ups", quantity: 40}
+];
+
+for(i = 0; i < setting.length; i++) {
+
+}
+
+var d = 10;
+var myVar = setInterval(function(){myTimer()}, 1000);
+
+
+</script>
+
+</body>
+</html>
