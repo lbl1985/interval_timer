@@ -15,75 +15,103 @@
 <div id = "myDIV">
 	<h1 id = "exercise">Exercise Name: </h1>
 	<h2 id = "set_id"> Set id: </h2>
-	<h3 id = "timer"> 0 </h1>
+	<h3 id = "timer"> 0 </h3>
 </div>
 
 <script>
 
-function runOneSetting(s) {
-	document.getElementById("exercise").innerHTML = "Exercise Name: " + s.name + " " + s.sets.toString() + " sets";
-	document.getElementById("set_id").innerHTML = "Set id: 0"; 
-	if (s.sets !== -1) {
-		runInterval(s)
+
+
+function processOneSet(s, init, state) {
+	if(init === true) {
+		setId = 0;
 	} else {
-		runQuantity(s)
+		// Just finish one tiny set
+		if (state === "rest" ) {
+			setId = setlId + 1;
+		}
+		// 
+		if (setId < s.sets) {
+
+		}
+
 	}
 }
 
-function runInterval(s) {
-	var d = 0;
-	var state = "exec";
-	var init = true;
-	var i = 0;
-	while(true) {		
-		// new set
-		if(init === true && d === 0) {
-			d = s.execTime;
-			init = false;
-			var myVar = setInterval(function(){myTimer()}, 1000);
-			// denotion section
-			document.getElementById("exercise").innerHTML = "Exercise Name: " + s.name + " " + s.sets.toString() + " sets";
-			document.getElementById("set_id").innerHTML = "Set id: 1";
-			document.getElementById("myDIV").style.backgroundColor = "red";
-		}		
-		if (d === 0) {
-			if (state === true) { // interval
-				d = s.Interval;
-				var myInterval = setInterval(function(){myTimer()}, 1000);
-				document.getElementById("exercise").innerHTML = "Interval Rest";
-				document.getElementById("set_id").innerHTML = "Set id: " + (i + 1).toString();
+// function runInterval2(s, execName, setId, state, callback)
+
+// function processOneSetCallback(execName, setId, sets, state)
+
+function runInterval(s, init) {	
+	// new set
+	if(init === true) {
+		timer_t = s.execTime;
+		timer_state = "exec";
+		timer_setid = 1;	
+		init = false;
+		// var myVar = setInterval(function(){myTimer(d)}, 1000);
+		// denotion section
+		document.getElementById("exercise").innerHTML = "Exercise Name: " + s.name + " " + s.sets.toString() + " sets";
+		document.getElementById("set_id").innerHTML = "Set: " + timer_setid.toString();
+		document.getElementById("myDIV").style.backgroundColor = "red";
+		
+	}
+
+	timer_t = timer_t - 1;
+	if (timer_t === 0) {
+		if (timer_state === "Interval") { // just finish Interval
+			timer_t = s.exec;
+			timer_setid = timer_setid + 1;
+
+			if (timer_setid <= s.sets) { // Normal process
+				timer_t = s.execTime;
+				timer_state = "exec";
+				document.getElementById("exercise").innerHTML = "Exercise Name: " + s.name + " " + s.sets.toString() + " sets";
+				document.getElementById("set_id").innerHTML = "Set id: " + timer_setid.toString();
+				document.getElementById("myDIV").style.backgroundColor = "red";
+			} else { // Final Rest section
+				timer_t = s.Rest;
+				timer_state = "rest";
+				document.getElementById("exercise").innerHTML = "REST";
+				document.getElementById("set_id").innerHTML = "";
 				document.getElementById("myDIV").style.backgroundColor = "green";
-			} else { // just finish interval
-				i = i + 1;
-				if (i < s.sets) {
-					d = s.execTime;
-					var myVar = setInterval(function(){myTimer()}, 1000);
-					document.getElementById("exercise").innerHTML = "Exercise Name: " + s.name + " " + s.sets.toString() + " sets";
-					document.getElementById("set_id").innerHTML = "Set id: " + (i + 1).toString();
-					document.getElementById("myDIV").style.backgroundColor = "red";
-				} else {
-					d = s.Rest;
-					var myRest = setInterval(function(){myRestTimer()}, 1000);
-					document.getElementById("exercise").innerHTML = "Rest";
-					document.getElementById("set_id").innerHTML = "";
-					document.getElementById("myDIV").style.backgroundColor = "blue";
-				}				
 			}
+		} else if (timer_state === "exec"){ // just finish exec
+			timer_t = s.Interval;
+			timer_state = "Interval";
+			document.getElementById("exercise").innerHTML = "Interval Rest";
+			document.getElementById("myDIV").style.backgroundColor = "lightblue";
+
+			
+
+			// if (i < s.sets) {
+			// 	d = s.execTime;
+			// 	document.getElementById("exercise").innerHTML = "Exercise Name: " + s.name + " " + s.sets.toString() + " sets";
+			// 	document.getElementById("set_id").innerHTML = "Set id: " + (i + 1).toString();
+			// 	document.getElementById("myDIV").style.backgroundColor = "red";
+			// } else {
+			// 	d = s.Rest;
+			// 	var myRest = setInterval(function(){myRestTimer()}, 1000);
+			// 	document.getElementById("exercise").innerHTML = "Rest";
+			// 	document.getElementById("set_id").innerHTML = "";
+			// 	document.getElementById("myDIV").style.backgroundColor = "blue";
+			// }				
 		}
 	}
+	document.getElementById("timer").innerHTML = timer_t.toString();
 }
 
-function myTimer() {
+function myTimer(d) {
 	d = d - 1;
 	document.getElementById("timer").innerHTML = d.toString();
 	if (d == 0) {		
 		if (state === "exec") {
 			state = "interval";
 			clearInterval(myVar)
-		} else if{
+		} else if(state === "interval"){
 
 		}
-		state = ~state;
+		
 	}
 }
 
@@ -96,8 +124,19 @@ function myRestTimer() {
 	}
 }
 
+function runOneSetting(s) {
+	document.getElementById("exercise").innerHTML =  "Exercise Name: " + s.name + " " + s.sets.toString() + " sets";
+	document.getElementById("set_id").innerHTML = "Set id: 0"; 
+	if (s.sets !== -1) {
+		runInterval(s, true);
+		var myInter = setInterval(function(){runInterval(s)}, 1000);
+	} else {
+		// runQuantity(s)
+	}
+}
+
 var setting = [ 
-	{sets:2,  name:"Test", execTime:2, Interval: 1, Rest: 5},
+	{sets:2,  name:"Test", execTime:5, Interval: 5, Rest: 5},
 	{sets:10, name:"BackExtension", execTime:15, Interval: 5, Rest: 20},
 	{sets:60, name:"KneelingSuperMan", execTime:4, Interval: 2, Rest: 20},
 	{sets:10, name:"LayingBackExtension", execTime:7, Interval: 3, Rest: 20},
@@ -109,12 +148,16 @@ var setting = [
 	{sets:-1, name:"Push Ups", quantity: 40}
 ];
 
-for(i = 0; i < setting.length; i++) {
+runOneSetting(setting[0])
 
-}
 
-var d = 10;
-var myVar = setInterval(function(){myTimer()}, 1000);
+
+// for(i = 0; i < setting.length; i++) {
+// 	runOneSetting
+// }
+
+// var d = 10;
+// var myVar = setInterval(function(){myTimer()}, 1000);
 
 
 </script>
