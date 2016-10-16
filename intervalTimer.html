@@ -3,8 +3,8 @@
 <head>
 	<style> 
 		#myDIV {
-		    width: 500px;
-		    height: 300px;
+		    width: 1400px;
+		    height: 750px;
 		    background-color: coral;
 		    color: white;
 		}
@@ -83,7 +83,7 @@ function runInterval(s, init) {
 		} else if (timer_state === "exec"){ // just finish exec
 			timer_t = s.Interval;
 			timer_state = "Interval";
-			document.getElementById("exercise").innerHTML = "Interval Rest";
+			document.getElementById("exercise").innerHTML = s.name + " Total " + s.sets.toString() + " sets. Interval Rest";
 			document.getElementById("myDIV").style.backgroundColor = "lightblue";				
 		} else if (timer_state = "rest") {
 			// finish the interval and return to the call back function outside
@@ -91,10 +91,8 @@ function runInterval(s, init) {
 			majorControlFunc(setting);
 		}
 	}
-	document.getElementById("timer").innerHTML = timer_t.toString();
+	document.getElementById("timer").innerHTML = "Time Left: " + timer_t.toString() + "s";
 }
-
-function 
 
 function myTimer(d) {
 	d = d - 1;
@@ -133,7 +131,7 @@ function runOneSetting(s) {
 
 
 var setting = [ 
-	{sets:2,  name:"Test", execTime:5, Interval: 5, Rest: 5},
+	// {sets:2,  name:"Test", execTime:5, Interval: 5, Rest: 5},
 	{sets:10, name:"BackExtension", execTime:15, Interval: 5, Rest: 20},
 	{sets:60, name:"KneelingSuperMan", execTime:4, Interval: 2, Rest: 20},
 	{sets:10, name:"LayingBackExtension", execTime:7, Interval: 3, Rest: 20},
