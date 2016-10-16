@@ -20,28 +20,6 @@
 
 <script>
 
-
-
-function processOneSet(s, init, state) {
-	if(init === true) {
-		setId = 0;
-	} else {
-		// Just finish one tiny set
-		if (state === "rest" ) {
-			setId = setlId + 1;
-		}
-		// 
-		if (setId < s.sets) {
-
-		}
-
-	}
-}
-
-// function runInterval2(s, execName, setId, state, callback)
-
-// function processOneSetCallback(execName, setId, sets, state)
-
 function runInterval(s, init) {	
 	// new set
 	if(init === true) {
@@ -49,7 +27,6 @@ function runInterval(s, init) {
 		timer_state = "exec";
 		timer_setid = 1;	
 		init = false;
-		// var myVar = setInterval(function(){myTimer(d)}, 1000);
 		// denotion section
 		document.getElementById("exercise").innerHTML = "Exercise Name: " + s.name + " Total " + s.sets.toString() + " sets";
 		document.getElementById("set_id").innerHTML = "Set: " + timer_setid.toString();
@@ -94,20 +71,6 @@ function runInterval(s, init) {
 	document.getElementById("timer").innerHTML = "Time Left: " + timer_t.toString() + "s";
 }
 
-function myTimer(d) {
-	d = d - 1;
-	document.getElementById("timer").innerHTML = d.toString();
-	if (d == 0) {		
-		if (state === "exec") {
-			state = "interval";
-			clearInterval(myVar)
-		} else if(state === "interval"){
-
-		}
-		
-	}
-}
-
 function myRestTimer() {
 	d = d - 1;
 	document.getElementById("timer").innerHTML = d.toString();
@@ -128,8 +91,6 @@ function runOneSetting(s) {
 	}
 }
 
-
-
 var setting = [ 
 	// {sets:2,  name:"Test", execTime:5, Interval: 5, Rest: 5},
 	{sets:10, name:"BackExtension", execTime:15, Interval: 5, Rest: 20},
@@ -137,14 +98,14 @@ var setting = [
 	{sets:10, name:"LayingBackExtension", execTime:7, Interval: 3, Rest: 20},
 	{sets:10, name:"WallSliding", execTime:7, Interval: 3, Rest: 20},
 	// {sets:-1, name:"Back Stretch Up", quantity: 30},
-	{sets:1,  name:"Back Stretch Up", execTime:40, Interval: 0, Rest: 30},
+	{sets:1,  name:"Back Stretch Up", execTime:40, Interval: 1, Rest: 30},
 	{sets:20, name:"CoreStretch", execTime:15, Interval: 5, Rest: 20},
 	// {sets:-1, name:"Russian Swiss", quantity: 60},
-	{sets:1,  name:"Russian Swiss", execTime:60, Interval: 0, Rest: 30},
+	{sets:1,  name:"Russian Swiss", execTime:60, Interval: 1, Rest: 30},
 	// {sets:-1, name:"Back Stretch Up", quantity: 30},
-	{sets:1,  name:"Back Stretch Up", execTime:40, Interval: 0, Rest: 30},
+	{sets:1,  name:"Back Stretch Up", execTime:40, Interval: 1, Rest: 30},
 	// {sets:-1, name:"Push Ups", quantity: 40}
-	{sets:1, name:"Push Ups", execTime:60, Interval: 0, Rest: 0}
+	{sets:1, name:"Push Ups", execTime:60, Interval: 1, Rest: 0}
 
 ];
 
@@ -159,17 +120,6 @@ function majorControlFunc() {
 
 timer_setting_id = -1;
 majorControlFunc(setting)
-// runOneSetting(setting[0])
-
-
-
-// for(i = 0; i < setting.length; i++) {
-// 	runOneSetting
-// }
-
-// var d = 10;
-// var myVar = setInterval(function(){myTimer()}, 1000);
-
 
 </script>
 
