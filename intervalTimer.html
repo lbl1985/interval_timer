@@ -83,6 +83,7 @@ function runInterval(s, init) {
 		} else if (timer_state = "rest") {
 			// finish the interval and return to the call back function outside
 			clearInterval(timer_IntervalVar);
+			timer_setting_id = timer_setting_id + 1;
 			majorControlFunc(setting);
 		}
 		beep();
@@ -106,7 +107,7 @@ function pauseTimer() {
 }
 
 function resumeTimer() {
-	majorControlFunc(setting);
+	timer_IntervalVar = setInterval(function(){runInterval(setting[timer_setting_id])}, 1000);
 }
 
 var setting = [ 
@@ -129,13 +130,13 @@ var setting = [
 
 
 
-function majorControlFunc() {
+function majorControlFunc() {	
 	if (timer_setting_id < setting.length) {
 		runOneSetting(setting[timer_setting_id]);
 	}
 }
 
-timer_setting_id = -1;
+timer_setting_id = 0;
 // majorControlFunc(setting)
 
 </script>
