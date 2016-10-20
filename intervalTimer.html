@@ -18,6 +18,8 @@
 	<h3 id = "timer"> 0 </h3>
 	<!-- <a href="#", id=startButton>Start</a> -->
 	<button onclick="majorControlFunc(setting)">Start</button>
+	<button onclick="pauseTimer()">Pause</button>
+	<button onclick="resumeTimer()">Resume</button>
 </div>
 
 <script>
@@ -88,15 +90,6 @@ function runInterval(s, init) {
 	document.getElementById("timer").innerHTML = "Time Left: " + timer_t.toString() + "s";
 }
 
-function myRestTimer() {
-	d = d - 1;
-	document.getElementById("timer").innerHTML = d.toString();
-	if (d == 0) {
-		clearInterval(myRest)
-		state = ~state;
-	}
-}
-
 function runOneSetting(s) {
 	document.getElementById("exercise").innerHTML =  "Exercise Name: " + s.name + " " + s.sets.toString() + " sets";
 	document.getElementById("set_id").innerHTML = "Set id: 0"; 
@@ -106,6 +99,14 @@ function runOneSetting(s) {
 	} else {
 		// runQuantity(s)
 	}
+}
+
+function pauseTimer() {
+	clearInterval(timer_IntervalVar);
+}
+
+function resumeTimer() {
+	majorControlFunc(setting);
 }
 
 var setting = [ 
@@ -129,7 +130,6 @@ var setting = [
 
 
 function majorControlFunc() {
-	timer_setting_id = timer_setting_id + 1;
 	if (timer_setting_id < setting.length) {
 		runOneSetting(setting[timer_setting_id]);
 	}
