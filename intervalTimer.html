@@ -25,6 +25,18 @@ function beep() {
     snd.play();
 }
 
+function restSession(s) {
+	timer_t = s.Rest;
+	timer_state = "rest";
+	document.getElementById("exercise").innerHTML = "REST";
+	if (timer_setting_id + 1 < setting.length) {
+		document.getElementById("set_id").innerHTML = "Name Exercise is: " + setting[timer_setting_id + 1].name;
+	} else {
+		document.getElementById("set_id").innerHTML = "Good Job your exercise is done.";
+	}				
+	document.getElementById("myDIV").style.backgroundColor = "green";
+}
+
 function runInterval(s, init) {	
 	// new set
 	if(init === true) {
@@ -52,21 +64,18 @@ function runInterval(s, init) {
 				document.getElementById("set_id").innerHTML = "Set id: " + timer_setid.toString();
 				document.getElementById("myDIV").style.backgroundColor = "red";
 			} else { // Final Rest section
-				timer_t = s.Rest;
-				timer_state = "rest";
-				document.getElementById("exercise").innerHTML = "REST";
-				if (timer_setting_id + 1 < setting.length) {
-					document.getElementById("set_id").innerHTML = "Name Exercise is: " + setting[timer_setting_id + 1].name;
-				} else {
-					document.getElementById("set_id").innerHTML = "Good Job your exercise is done.";
-				}				
-				document.getElementById("myDIV").style.backgroundColor = "green";
+				restSession(s);
 			}
 		} else if (timer_state === "exec"){ // just finish exec
-			timer_t = s.Interval;
-			timer_state = "Interval";
-			document.getElementById("exercise").innerHTML = s.name + " Total " + s.sets.toString() + " sets. Interval Rest";
-			document.getElementById("myDIV").style.backgroundColor = "lightblue";				
+			if (timer_setid < s.sets) {
+				timer_t = s.Interval;
+				timer_state = "Interval";
+				document.getElementById("exercise").innerHTML = s.name + " Total " + s.sets.toString() + " sets. Interval Rest";
+				document.getElementById("myDIV").style.backgroundColor = "lightblue";
+			} else {
+				restSession(s);
+			}
+							
 		} else if (timer_state = "rest") {
 			// finish the interval and return to the call back function outside
 			clearInterval(timer_IntervalVar);
@@ -98,7 +107,7 @@ function runOneSetting(s) {
 }
 
 var setting = [ 
-	// {sets:2,  name:"Test", execTime:5, Interval: 5, Rest: 5},
+	{sets:2,  name:"Test", execTime:5, Interval: 5, Rest: 5},
 	{sets:10, name:"BackExtension", execTime:15, Interval: 5, Rest: 20},
 	{sets:60, name:"KneelingSuperMan", execTime:4, Interval: 2, Rest: 20},
 	{sets:10, name:"LayingBackExtension", execTime:7, Interval: 3, Rest: 20},
